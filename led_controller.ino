@@ -22,14 +22,37 @@ uint32_t get_color(int id, float t)
 {
   float interval = 1;
   int step = t / interval + id;
-  float angle = fmod(t / interval, 1.0) * 2.0 * 3.1415926535;
-  step %= step_max;
+  float angle = fmod(t / interval, 1.0) * 3.1415926535;
 
-  float gain = (1 - cos(angle)) / 2.0;
-  uint32_t c = color_step[step];
-  uint8_t r = ((c >> 16) & 0xff) * gain;
-  uint8_t g = ((c >>  8) & 0xff) * gain;
-  uint8_t b = ((c >>  0) & 0xff) * gain;
+  int step1 = step % step_max;
+  float gain1 = (cos(angle) + 1) / 2.0;
+  uint32_t c1 = color_step[step1];
+  uint8_t r1 = ((c1 >> 16) & 0xff) * gain1;
+  uint8_t g1 = ((c1 >>  8) & 0xff) * gain1;
+  uint8_t b1 = ((c1 >>  0) & 0xff) * gain1;
+
+  int step2 = (step + 1) %step_max;
+  float gain2 = 1.0 - gain1;
+  uint32_t c2 = color_step[step2];
+  uint8_t r2 = ((c2 >> 16) & 0xff) * gain2;
+  uint8_t g2 = ((c2 >>  8) & 0xff) * gain2;
+  uint8_t b2 = ((c2 >>  0) & 0xff) * gain2;
+
+  uint8_t r = r1 + r2;
+  uint8_t g = g1 + g2;
+  uint8_t b = b1 + b2;
+
+  if(id == 0){
+    Serial.print(b +   0);
+    Serial.print(", ");
+    Serial.print(r + 600);
+    Serial.print(", ");
+    Serial.print(g + 300);
+    Serial.print(", ");
+    Serial.print(900);
+    Serial.print(", ");
+    Serial.println("");
+  }
 
   return(ledtape.Color(r, g, b));
 }
@@ -37,6 +60,7 @@ uint32_t get_color(int id, float t)
 void setup() {
   ledtape.begin();
   ledtape.show();   //一旦全てOFFの状態で反映
+  Serial.begin(115200);
 }
 
 void loop() {
