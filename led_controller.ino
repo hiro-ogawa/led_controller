@@ -25,9 +25,13 @@ uint32_t get_color(int id, float t)
   float angle = fmod(t / interval, 1.0) * 2.0 * 3.1415926535;
   step %= step_max;
 
-  hsv c = color_step[step];
-  uint8_t val = c.val * (1 - cos(angle)) / 2.0;
-  return(ledtape.ColorHSV(c.hue, c.sat, val));
+  float gain = (1 - cos(angle)) / 2.0;
+  uint32_t c = color_step[step];
+  uint8_t r = ((c >> 16) & 0xff) * gain;
+  uint8_t g = ((c >>  8) & 0xff) * gain;
+  uint8_t b = ((c >>  0) & 0xff) * gain;
+
+  return(ledtape.Color(r, g, b));
 }
  
 void setup() {

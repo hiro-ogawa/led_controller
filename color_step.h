@@ -1,26 +1,16 @@
-struct hsv{
-  uint16_t hue;
-  uint8_t sat;
-  uint8_t val;
+uint32_t color_step[] = {
+  0x00ff0000,
+  0x00000000,
+  0x00ffff00,
+  0x00000000,
+  0x0000ff00,
+  0x00000000,
+  0x0000ffff,
+  0x00000000,
+  0x000000ff,
+  0x00000000,
+  0x00ff00ff,
+  0x00000000,
 };
 
-hsv color_step[] = {
-  hsv{0x0000, 0,   0},
-  hsv{0x0000, 0, 255},
-  hsv{0x2000, 0,   0},
-  hsv{0x2000, 0, 255},
-  hsv{0x4000, 0,   0},
-  hsv{0x4000, 0, 255},
-  hsv{0x6000, 0,   0},
-  hsv{0x6000, 0, 255},
-  hsv{0x8000, 0,   0},
-  hsv{0x8000, 0, 255},
-  hsv{0xa000, 0,   0},
-  hsv{0xa000, 0, 255},
-  hsv{0xc000, 0,   0},
-  hsv{0xc000, 0, 255},
-  hsv{0xe000, 0,   0},
-  hsv{0xe000, 0, 255},
-};
-
-int step_max = sizeof(color_step) / sizeof(hsv);
+int step_max = sizeof(color_step) / sizeof(uint32_t);
